@@ -19,7 +19,7 @@ function randomKey() {
     }
     return key;
 }
-
+//创建地址和私钥
 function generateAccounts() {
     let keys = [];
     for (let i = 0; i < 500; ++i) {
@@ -29,8 +29,16 @@ function generateAccounts() {
         path,
         JSON.stringify(keys, null, '\t'),
     );
+
+    let addresses = keys.map((x) => web3.eth.accounts.privateKeyToAccount(x).address);
+    let path1 = __dirname + '/address.json';
+    fs.writeFileSync(
+      path1,
+      JSON.stringify(addresses, null, '\t'),
+    );
 }
 
+//加载私钥
 function loadAccounts() {
     let keys = JSON.parse(fs.readFileSync(path));
     keys.map((x) => web3.eth.accounts.wallet.add(x));
@@ -52,6 +60,7 @@ function loadAccounts() {
 // market deployed to: 0xA320C356Ba27C9De46B69318Bf723335b7730b65
 const marketContract = '0xA320C356Ba27C9De46B69318Bf723335b7730b65'
 
+//批量授权
 async function approve() {
     await loadAccounts()
 
@@ -80,7 +89,7 @@ async function approve() {
     }
     await Promise.all(arr)
 }
-
+//批量购买
 async function buy() {
     //合约地址
     const contractAddress = marketContract;
@@ -95,10 +104,10 @@ async function buy() {
         const index = i;
         const amount = '500000000000000000000';
         const prof = helper.getProof(i);
-      //  console.log("prof:",prof.proof)
-        const NFTid = i+1;
+        //  console.log("prof:",prof.proof)
+        const NFTid = i + 1;
         arr.push(
-            market.methods.buy(index,amount,prof.proof,NFTid).send(
+            market.methods.buy(index, amount, prof.proof, NFTid).send(
                 {
                     from: _from,
                     gasLimit: web3.utils.toHex(250000),
@@ -127,6 +136,9 @@ const main = async function () {
                 console.log("trans begin")
                 buy();
 
+            } else if (val == "account") {
+                console.log("create addr begin")
+                generateAccounts()
             } else {
                 console.log("wrong param!")
             }
