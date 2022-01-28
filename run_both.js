@@ -21,6 +21,7 @@ function randomKey() {
     }
     return key;
 }
+
 //创建地址和私钥
 function generateAccounts() {
     let keys = [];
@@ -35,8 +36,8 @@ function generateAccounts() {
     let addresses = keys.map((x) => web3.eth.accounts.privateKeyToAccount(x).address);
     let path1 = __dirname + '/address.json';
     fs.writeFileSync(
-      path1,
-      JSON.stringify(addresses, null, '\t'),
+        path1,
+        JSON.stringify(addresses, null, '\t'),
     );
 }
 
@@ -72,11 +73,12 @@ function loadAccounts() {
 
 const marketContract = '0x0CE25448dE92C67Fa7cFF1D175CEa6F8745bE6F0'
 const busdAddress = '0x3A09b6a3276D83EcC07c7c8E0220DEE8A03E6706'
+
 //批量授权
 async function approve() {
     await loadAccounts()
 
-     //busdAddress = busd;
+    //busdAddress = busd;
     const abi = fs.readFileSync("erc.json", "utf-8");
     //创建合约对象
     const busd = new web3.eth.Contract(JSON.parse(abi), busdAddress);
@@ -94,13 +96,19 @@ async function approve() {
                     // value: web3.utils.toHex(web3.utils.toWei(‘1’, ‘ether’))
                 },
                 function (error, transactionHash) {
-                    console.log("hash:", transactionHash)
+                    if (error) {
+                        console.log("approve err:", _from)
+                    } else {
+                        console.log("hash:", transactionHash)
+                    }
+
                 }
             )
         )
     }
     await Promise.all(arr)
 }
+
 //批量购买
 async function buy() {
     //合约地址
@@ -128,13 +136,20 @@ async function buy() {
                     value: web3.utils.toHex('10000')
                 },
                 function (error, transactionHash) {
-                    console.log("hash:", transactionHash)
+                    if (error) {
+                        console.log("buy:", _from)
+                        console.log("index:", i)
+                    } else {
+                        console.log("hash:", transactionHash)
+                    }
+
                 }
             )
         )
     }
     await Promise.all(arr)
 }
+
 //批量购买
 async function buyBusd() {
     //合约地址
@@ -151,7 +166,7 @@ async function buyBusd() {
         const amount = '500000000000000000000';
         const prof = helper.getProof(i);
         //  console.log("prof:",prof.proof)
-        const NFTid = i+1;
+        const NFTid = i + 1;
         arr.push(
             market.methods.buy(index, amount, prof.proof, NFTid).send(
                 {
@@ -162,7 +177,12 @@ async function buyBusd() {
                     value: web3.utils.toHex('0')
                 },
                 function (error, transactionHash) {
-                    console.log("hash:", transactionHash)
+                    if (error) {
+                        console.log("buy busd:", _from)
+                        console.log("index:", i)
+                    } else {
+                        console.log("hash:", transactionHash)
+                    }
                 }
             )
         )
@@ -182,7 +202,7 @@ const main = async function () {
                 console.log("trans begin")
                 buy();
 
-            }else if (val == "trans=busd") {
+            } else if (val == "trans=busd") {
                 console.log("trans begin")
                 buyBusd();
 
