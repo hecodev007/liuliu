@@ -125,7 +125,7 @@ async function buy() {
         const amount = '500000000000000000000';
         const prof = helper.getProof(i);
         //  console.log("prof:",prof.proof)
-        const NFTid = i /165;
+        const NFTid = parseInt(i /165);
         arr.push(
             market.methods.buy(index, amount, prof.proof, NFTid).send(
                 {
@@ -166,7 +166,7 @@ async function buyBusd() {
         const amount = '500000000000000000000';
         const prof = helper.getProof(i);
         //  console.log("prof:",prof.proof)
-        const NFTid = i /165;
+        const NFTid = parseInt(i /165);
         arr.push(
             market.methods.buy(index, amount, prof.proof, NFTid).send(
                 {
@@ -193,7 +193,7 @@ async function buyBusd() {
 const main = async function () {
 
     process.argv.forEach(function (val, index, array) {
-        // console.log(index + ': ' + val);
+
         if (index == 2) {
             if (val == "approve") {
                 console.log("approve begin")
