@@ -71,8 +71,15 @@ function loadAccounts() {
 // nft deployed to: 0x514a40f31a637bB8757bf69918E11cc78364FA12
 // market deployed to: 0x0CE25448dE92C67Fa7cFF1D175CEa6F8745bE6F0
 
-const marketContract = '0x0CE25448dE92C67Fa7cFF1D175CEa6F8745bE6F0'
-const busdAddress = '0x3A09b6a3276D83EcC07c7c8E0220DEE8A03E6706'
+
+
+// token deployed to: 0x981b3A8BA535882174F7805A88C3Fe11D650BE6B
+//
+// nft deployed to: 0xa4a41D76F03f6DAA5b0c0e9C66F0106Df54c16f8
+// market deployed to: 0xBd6f2F25b6D0d50D6D1988eF1EBE1BefA67203c5
+
+const marketContract = '0xBd6f2F25b6D0d50D6D1988eF1EBE1BefA67203c5'
+const busdAddress = '0x981b3A8BA535882174F7805A88C3Fe11D650BE6B'
 
 //批量授权
 async function approve() {
@@ -132,8 +139,8 @@ async function buy() {
                     from: _from,
                     gasLimit: web3.utils.toHex(250000),
                     gasPrice: web3.utils.toHex(20000000000),
-                    //value: web3.utils.toHex(web3.utils.toWei('1', 'ether'))
-                    value: web3.utils.toHex('10000')
+                    value: web3.utils.toHex(web3.utils.toWei('0.64', 'ether'))
+                   // value: web3.utils.toHex('10000')
                 },
                 function (error, transactionHash) {
                     if (error) {
